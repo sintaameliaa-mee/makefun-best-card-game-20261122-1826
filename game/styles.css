@@ -1,0 +1,431 @@
+/* Emberfall — the table, the cards, and the feel.
+   Deep indigo night, ember-gold trim, ivory cards. Suits differ by
+   colour AND by sigil shape, never by text alone. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #f5eeda;
+  background: #0c0f1e;
+  overflow: hidden;
+}
+
+#app {
+  height: 100vh;
+  max-width: 1280px;
+  margin: 0 auto;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(226, 72, 61, 0.14), transparent 60%),
+    radial-gradient(ellipse 80% 55% at 50% 115%, rgba(47, 127, 208, 0.16), transparent 60%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #1b2340 0%, #10142a 55%, #0b0e1d 100%);
+}
+
+.screen { height: 100%; display: flex; flex-direction: column; }
+.hidden { display: none !important; }
+
+/* ---------------- title screen ---------------- */
+
+#title-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px;
+}
+
+.title-emblem { font-size: 34px; letter-spacing: 14px; }
+.emblem-suit.ember { filter: drop-shadow(0 0 8px #e2483d); }
+.emblem-suit.tide { filter: drop-shadow(0 0 8px #2f7fd0); }
+.emblem-suit.thorn { filter: drop-shadow(0 0 8px #3da35d); }
+.emblem-suit.gale { filter: drop-shadow(0 0 8px #d9a521); }
+
+.game-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 92px;
+  line-height: 0.95;
+  letter-spacing: 0.12em;
+  color: #f8d878;
+  text-shadow: 0 0 34px rgba(248, 216, 120, 0.45), 0 4px 0 #7a4d12, 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.game-subtitle {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #cbb98a;
+}
+
+.game-tagline { font-size: 17px; line-height: 1.5; color: #d8d2bd; margin-top: 4px; }
+.game-tagline strong { color: #f8d878; }
+
+.title-cards { display: flex; gap: 14px; margin: 12px 0 20px; }
+.showcase-card { cursor: default; }
+
+.big-button {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  color: #241503;
+  background: linear-gradient(180deg, #ffd977, #e8a92c);
+  border: 2px solid #ffe9a8;
+  border-radius: 14px;
+  padding: 14px 44px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #7a4d12, 0 14px 28px rgba(0, 0, 0, 0.5);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.big-button:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #7a4d12, 0 18px 32px rgba(0, 0, 0, 0.5); }
+.big-button:active { transform: translateY(3px); box-shadow: 0 3px 0 #7a4d12; }
+
+.how-to { font-size: 14px; line-height: 1.7; color: #b9b29c; margin-top: 8px; }
+.how-to b { color: #f5eeda; }
+.how-to .gem { color: #7cc4ff; }
+.title-foot { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #8a8468; margin-top: 6px; }
+
+/* ---------------- top bar ---------------- */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 16px;
+  padding: 12px 20px 8px;
+}
+
+.duelist { display: flex; gap: 12px; align-items: center; min-width: 300px; }
+.duelist-info { display: flex; flex-direction: column; gap: 4px; }
+.duelist-info.right { align-items: flex-end; text-align: right; }
+
+.portrait {
+  width: 56px; height: 56px; flex: none;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: Georgia, serif; font-size: 30px; font-weight: bold;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.enemy-portrait { background: radial-gradient(circle at 35% 30%, #5a3a8a, #241533); color: #e8d5ff; }
+.player-portrait { background: radial-gradient(circle at 35% 30%, #c25a1e, #57240a); color: #ffe6c4; }
+
+.duelist-name { font-family: Georgia, serif; font-size: 19px; font-weight: bold; }
+.life-row { display: flex; align-items: center; gap: 8px; }
+.life-label { font-size: 12px; font-weight: bold; letter-spacing: 0.1em; color: #ff8f8f; }
+.life-bar {
+  width: 190px; height: 18px;
+  background: #2a0d12;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.life-fill { height: 100%; background: linear-gradient(180deg, #ff7a6e, #d92c20); transition: width 0.45s ease; }
+.life-fill.player { background: linear-gradient(180deg, #7ed491, #2c9e4b); }
+.life-fill.low { background: linear-gradient(180deg, #ffb020, #e2483d); animation: pulse-low 0.9s ease-in-out infinite alternate; }
+@keyframes pulse-low { from { filter: brightness(1); } to { filter: brightness(1.45); } }
+.life-text { font-size: 15px; font-weight: bold; min-width: 58px; }
+
+.block-row { display: flex; gap: 8px; align-items: center; min-height: 26px; }
+.block-badge {
+  font-size: 14px; font-weight: bold; color: #bfe3ff;
+  background: rgba(47, 127, 208, 0.25);
+  border: 1px solid #2f7fd0; border-radius: 8px; padding: 2px 8px;
+}
+.intent-badge {
+  font-size: 13px; font-weight: bold;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px; padding: 3px 10px;
+}
+.intent-strike { color: #ffb3ab; border-color: #e2483d; background: rgba(226, 72, 61, 0.18); }
+.intent-guard { color: #bfe3ff; border-color: #2f7fd0; background: rgba(47, 127, 208, 0.18); }
+.intent-surge { color: #ffe9a8; border-color: #d9a521; background: rgba(217, 165, 33, 0.18); }
+
+.energy-badge { font-size: 15px; font-weight: bold; color: #7cc4ff; letter-spacing: 2px; }
+.energy-badge.empty { color: #8a8468; }
+
+.match-info { text-align: center; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
+.turn-label { font-family: Georgia, serif; font-size: 22px; font-weight: bold; letter-spacing: 0.22em; color: #f8d878; }
+.score-label { font-size: 15px; font-weight: bold; letter-spacing: 0.14em; color: #f5eeda; }
+.phase-label { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #b9b29c; }
+.phase-player { color: #9fe8b4; }
+.phase-enemy { color: #ffb3ab; }
+
+/* ---------------- hands ---------------- */
+
+.hand { display: flex; justify-content: center; gap: 10px; }
+.enemy-hand { min-height: 118px; padding-top: 2px; }
+.player-hand { min-height: 208px; padding: 6px 0 4px; }
+
+/* ---------------- cards ---------------- */
+
+.card {
+  --suit: #888;
+  --suit-dark: #444;
+  --fan-rot: 0deg;
+  --fan-y: 0px;
+  position: relative;
+  width: 132px; height: 190px; flex: none;
+  background: linear-gradient(165deg, #fffdf4 0%, #f3e9cf 78%, #e9d9ae 100%);
+  border: 3px solid var(--suit);
+  border-radius: 13px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+  color: #241d12;
+  transform: rotate(var(--fan-rot)) translateY(var(--fan-y));
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  user-select: none;
+}
+
+.card.mini { width: 108px; height: 152px; border-radius: 11px; }
+.card.mini .card-sigil svg { width: 30px; height: 30px; }
+.card.mini .card-name { font-size: 13px; }
+.card.mini .card-power { font-size: 26px; }
+.card.mini .card-text { font-size: 10px; }
+
+.card-cost {
+  position: absolute; top: 7px; left: 7px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3d5a8a, #16233d);
+  color: #fff; font-size: 17px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #cfe3ff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+.card.mini .card-cost { width: 24px; height: 24px; font-size: 14px; }
+
+.card-sigil {
+  position: absolute; top: 34px; left: 0; right: 0;
+  display: flex; justify-content: center;
+  color: var(--suit);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+.card.mini .card-sigil { top: 28px; }
+
+.card-name {
+  position: absolute; top: 86px; left: 6px; right: 6px;
+  text-align: center;
+  font-family: Georgia, serif; font-size: 16px; font-weight: bold; line-height: 1.1;
+}
+.card.mini .card-name { top: 66px; }
+
+.card-suit-name {
+  position: absolute; top: 108px; left: 0; right: 0;
+  text-align: center;
+  font-size: 10px; font-weight: bold; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--suit-dark);
+}
+.card.mini .card-suit-name { top: 86px; }
+
+.card-power {
+  position: absolute; bottom: 30px; left: 0; right: 0;
+  text-align: center;
+  font-size: 34px; font-weight: bold; line-height: 1;
+  color: var(--suit-dark);
+}
+.card-power .power-kind { font-size: 20px; margin-right: 3px; }
+.card.mini .card-power { bottom: 24px; }
+
+.card-text {
+  position: absolute; bottom: 8px; left: 8px; right: 8px;
+  text-align: center;
+  font-size: 11px; font-style: italic; line-height: 1.25; color: #5a4d33;
+}
+.card-key {
+  position: absolute; bottom: 6px; right: 7px;
+  width: 18px; height: 18px; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.12);
+  font-size: 11px; font-weight: bold; color: #5a4d33;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.card.playable { cursor: pointer; }
+.card.playable:hover {
+  transform: rotate(var(--fan-rot)) translateY(calc(var(--fan-y) - 20px)) scale(1.07);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.6), 0 0 0 3px rgba(248, 216, 120, 0.85), 0 0 22px rgba(248, 216, 120, 0.5);
+  z-index: 5;
+}
+.card.disabled { filter: saturate(0.45) brightness(0.82); }
+
+.card-back {
+  width: 88px; height: 122px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(248, 216, 120, 0.28), transparent 55%),
+    repeating-linear-gradient(45deg, #2c1a4d 0 10px, #3a2361 10px 20px);
+  border: 3px solid #6b4fa3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  color: #e8d5ff;
+}
+.back-sigil { font-size: 30px; color: #f8d878; text-shadow: 0 0 12px rgba(248, 216, 120, 0.8); }
+.back-word { font-size: 8px; font-weight: bold; letter-spacing: 0.3em; }
+
+/* Deal: cards slide up from the deck and snap into the fan. */
+.card-enter { animation: deal-in 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
+@keyframes deal-in {
+  from { transform: translateY(110px) rotate(var(--fan-rot)) scale(0.72); opacity: 0; }
+  to { transform: translateY(var(--fan-y)) rotate(var(--fan-rot)) scale(1); opacity: 1; }
+}
+
+/* Play: the card flips face-up into the arena and snaps into place. */
+.card-flip { animation: flip-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+@keyframes flip-in {
+  0% { transform: rotateY(95deg) scale(0.7); opacity: 0; }
+  60% { transform: rotateY(-12deg) scale(1.06); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.shake { animation: shake-hit 0.4s ease; }
+@keyframes shake-hit {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ---------------- arena ---------------- */
+
+.arena {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  min-height: 168px;
+  margin: 2px 26px;
+  border-top: 1px solid rgba(248, 216, 120, 0.25);
+  border-bottom: 1px solid rgba(248, 216, 120, 0.25);
+  background: radial-gradient(ellipse 60% 90% at 50% 50%, rgba(248, 216, 120, 0.07), transparent 70%);
+}
+
+.arena-slot {
+  width: 150px; min-height: 168px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+}
+.slot-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8468; order: 2; }
+.arena-slot .card { order: 1; }
+
+.arena-center { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 380px; }
+.arena-message { font-family: Georgia, serif; font-size: 19px; font-style: italic; color: #e8dfc4; min-height: 26px; }
+
+.resonance-banner {
+  font-size: 21px; font-weight: bold; letter-spacing: 0.14em;
+  color: #fff;
+  background: var(--suit, #e2483d);
+  border-radius: 10px;
+  padding: 6px 18px;
+  box-shadow: 0 0 24px var(--suit, #e2483d);
+  animation: resonance-pulse 0.7s ease-in-out infinite alternate;
+}
+@keyframes resonance-pulse { from { transform: scale(1); } to { transform: scale(1.07); } }
+
+.combo-meter { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.combo-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; color: #cfc8ae;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px; padding: 3px 10px 3px 6px;
+}
+.combo-chip svg { color: var(--suit); }
+.combo-chip.armed { border-color: var(--suit); color: #fff; box-shadow: 0 0 10px color-mix(in srgb, var(--suit) 55%, transparent); }
+.combo-chip.fired { background: var(--suit); color: #fff; }
+.combo-hint { font-size: 12px; color: #8a8468; width: 100%; }
+
+/* ---------------- controls + log ---------------- */
+
+.table-controls { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 6px 0 2px; }
+.end-turn {
+  font-family: Georgia, serif; font-size: 19px; font-weight: bold;
+  color: #241503;
+  background: linear-gradient(180deg, #ffd977, #e8a92c);
+  border: 2px solid #ffe9a8; border-radius: 12px;
+  padding: 9px 34px; cursor: pointer;
+  box-shadow: 0 4px 0 #7a4d12, 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+.end-turn:hover:not(:disabled) { transform: translateY(-1px); }
+.end-turn:disabled { filter: grayscale(0.7) brightness(0.7); cursor: default; }
+.ghost-button {
+  font-size: 14px; font-weight: bold; color: #d8d2bd;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px; padding: 8px 16px; cursor: pointer;
+}
+.ghost-button:hover { background: rgba(255, 255, 255, 0.14); }
+.deck-counts { font-size: 12px; color: #8a8468; }
+
+.battle-log {
+  height: 70px; overflow: hidden;
+  margin: 2px 40px 8px;
+  padding: 5px 14px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 13px; line-height: 1.5; color: #b9b29c;
+}
+.battle-log div:first-child { color: #f5eeda; font-weight: bold; }
+
+/* ---------------- floating numbers ---------------- */
+
+#float-layer { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+.float-text {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 30px; font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  animation: float-up 1.25s ease-out both;
+}
+.float-text.damage { color: #ff6a5e; }
+.float-text.block { color: #8fc8ff; font-size: 24px; }
+.float-text.heal { color: #7ed491; font-size: 24px; }
+.float-text.draw, .float-text.energy { color: #f8d878; font-size: 22px; }
+@keyframes float-up {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); }
+  15% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); }
+  100% { opacity: 0; transform: translate(-50%, -190%) scale(1); }
+}
+
+/* ---------------- end screens ---------------- */
+
+#end-screen { align-items: center; justify-content: center; position: relative; overflow: hidden; }
+#end-screen.won { background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(248, 216, 120, 0.16), transparent 65%); }
+#end-screen.lost { background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(120, 40, 60, 0.25), transparent 65%); }
+
+.end-panel {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  text-align: center;
+  background: rgba(10, 12, 26, 0.72);
+  border: 2px solid rgba(248, 216, 120, 0.4);
+  border-radius: 22px;
+  padding: 36px 64px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: panel-in 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+@keyframes panel-in {
+  from { transform: scale(0.8) translateY(30px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.end-emblem { font-size: 64px; }
+.end-title { font-family: Georgia, serif; font-size: 76px; letter-spacing: 0.14em; line-height: 1; }
+.end-title.win { color: #f8d878; text-shadow: 0 0 36px rgba(248, 216, 120, 0.6), 0 4px 0 #7a4d12; }
+.end-title.lose { color: #c98a9a; text-shadow: 0 0 30px rgba(201, 138, 154, 0.5); }
+.end-subtitle { font-size: 17px; font-style: italic; color: #d8d2bd; }
+.end-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 28px; margin: 8px 0; }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat span { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #8a8468; }
+.stat b { font-size: 24px; color: #f5eeda; }
+
+.confetti-layer { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+.confetti-layer i {
+  position: absolute; top: -16px;
+  width: 11px; height: 16px;
+  animation: confetti-fall linear infinite;
+}
+@keyframes confetti-fall {
+  to { transform: translateY(105vh) rotate(720deg); }
+}

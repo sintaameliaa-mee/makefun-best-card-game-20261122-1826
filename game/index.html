@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emberfall — Duel of the Four Winds</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <!-- Title screen -->
+  <section id="title-screen" class="screen">
+    <div class="title-emblem" aria-hidden="true">
+      <span class="emblem-suit ember">🔥</span><span class="emblem-suit tide">💧</span><span class="emblem-suit thorn">🍃</span><span class="emblem-suit gale">🌀</span>
+    </div>
+    <h1 class="game-title">EMBERFALL</h1>
+    <p class="game-subtitle">Duel of the Four Winds</p>
+    <p class="game-tagline">Outplay Sable, the Ash Herald. Chain two cards of one suit<br>to ignite <strong>Resonance</strong> — and burn the Herald down.</p>
+    <div class="title-cards" id="title-cards" aria-hidden="true"></div>
+    <button id="play-button" class="big-button">▶ &nbsp;Play the Duel</button>
+    <div class="how-to">
+      <div><b>1–5</b> play a card &nbsp;·&nbsp; <b>Space</b> end turn &nbsp;·&nbsp; <b>R</b> restart</div>
+      <div>Click a card, or tap its number key. Spend <span class="gem">◆</span> energy — it refills each turn.</div>
+      <div>Read Sable's intent, then counter it: Guard answers Strike, Strike answers Guard.</div>
+    </div>
+    <p class="title-foot">An original game · You 20 life · Sable 22 · first to zero loses</p>
+  </section>
+
+  <!-- Game table -->
+  <section id="table-screen" class="screen hidden">
+    <header class="topbar">
+      <div class="duelist enemy-side">
+        <div class="portrait enemy-portrait">S</div>
+        <div class="duelist-info">
+          <div class="duelist-name">Sable, the Ash Herald</div>
+          <div class="life-row"><span class="life-label">♥ LIFE</span><div class="life-bar"><div id="enemy-life-fill" class="life-fill enemy"></div></div><span id="enemy-life-text" class="life-text">20 / 20</span></div>
+          <div class="block-row"><span id="enemy-block" class="block-badge hidden">🛡 0</span><span id="enemy-intent" class="intent-badge">…</span></div>
+        </div>
+      </div>
+      <div class="match-info">
+        <div id="turn-label" class="turn-label">ROUND 1</div>
+        <div id="score-label" class="score-label">SCORE 0</div>
+        <div id="phase-label" class="phase-label">Your turn</div>
+      </div>
+      <div class="duelist player-side">
+        <div class="duelist-info right">
+          <div class="duelist-name">You — the Ember Warden</div>
+          <div class="life-row"><span class="life-label">♥ LIFE</span><div class="life-bar"><div id="player-life-fill" class="life-fill player"></div></div><span id="player-life-text" class="life-text">20 / 20</span></div>
+          <div class="block-row"><span id="player-block" class="block-badge hidden">🛡 0</span><span id="player-energy" class="energy-badge">◆◆◆ 3</span></div>
+        </div>
+        <div class="portrait player-portrait">W</div>
+      </div>
+    </header>
+
+    <div id="enemy-hand" class="hand enemy-hand" aria-label="Opponent hand"></div>
+
+    <div class="arena">
+      <div class="arena-slot" id="enemy-played"><div class="slot-label">Sable played</div></div>
+      <div class="arena-center">
+        <div id="resonance-banner" class="resonance-banner hidden">✦ RESONANCE ✦</div>
+        <div id="arena-message" class="arena-message">Your turn — play a card.</div>
+        <div id="combo-meter" class="combo-meter"></div>
+      </div>
+      <div class="arena-slot" id="player-played"><div class="slot-label">You played</div></div>
+    </div>
+
+    <div class="table-controls">
+      <button id="end-turn-button" class="end-turn">End Turn &nbsp;⏎</button>
+      <button id="restart-button" class="ghost-button">↻ Restart</button>
+      <div id="deck-counts" class="deck-counts"></div>
+    </div>
+
+    <div id="player-hand" class="hand player-hand" aria-label="Your hand"></div>
+    <div id="battle-log" class="battle-log" aria-live="polite"></div>
+  </section>
+
+  <!-- End screens -->
+  <section id="end-screen" class="screen hidden">
+    <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+    <div class="end-panel">
+      <div id="end-emblem" class="end-emblem">🏆</div>
+      <h2 id="end-title" class="end-title">VICTORY</h2>
+      <p id="end-subtitle" class="end-subtitle"></p>
+      <div id="end-stats" class="end-stats"></div>
+      <button id="again-button" class="big-button">▶ &nbsp;Duel Again</button>
+      <button id="title-button" class="ghost-button">Back to Title</button>
+    </div>
+  </section>
+</div>
+<div id="float-layer" aria-hidden="true"></div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
